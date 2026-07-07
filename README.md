@@ -1,7 +1,7 @@
 # PSVR2HeadpatHaptics
 A simple [PSVR2Toolkit](https://github.com/BnuuySolutions/PSVR2Toolkit) client that exposes the headset's rumble functionality over OSC and optionally WebSockets.
 
-Requires .NET 10 Runtime installed and the PSVR2Toolkit CAPI client DLL in the same directory.
+Requires .NET 10 Runtime installed and the PSVR2Toolkit CAPI client DLL in the same directory. The DLL can be found [here](https://github.com/BnuuySolutions/PSVR2Toolkit.Baballonia/blob/main/PSVR2Toolkit.Baballonia/psvr2_toolkit_capi_loader.dll).
 
 Command line options:
 ```
