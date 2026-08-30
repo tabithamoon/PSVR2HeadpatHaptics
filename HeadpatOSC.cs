@@ -25,6 +25,7 @@ class HeadpatOSC
     private static bool _useOSC;
     private static bool _useWS;
     private static int _wsPort;
+    private static int _MaxHz;
     
     public class Options
     {
@@ -51,6 +52,9 @@ class HeadpatOSC
         
         [Option("velocity-sensitivity", Required = false, Default = 4f, HelpText = "Tunable sensitivity for velocity calculation, higher number = less sensitive")]
         public float VelocitySensitivity { get; set; }
+
+	[Option("max-rumblehz", Required = false, Default = 25, HelpText = "Tunable maximum rumble frequency. Default is 25hz (Maximum offered by the PSVR2) Range: 10-25")]
+	public int MaxHz { get; set; }
     }
     
     private static void Main(string[] args)
@@ -66,12 +70,19 @@ class HeadpatOSC
                 _verbose = o.Verbose;
                 _useOSC = o.EnableOSC;
                 _useWS = o.EnableWS;
+		_MaxHz = o.MaxHz;
             });
         
         if (PSVR2ToolkitCAPI.Init() != 0) {
             Console.Error.WriteLine("Failed to connect to PSVR2Toolkit.");
             return;
         }
+	// Check to ensure that MaxHz is in the appropriate range, and go to a valid value if it is outside the range.
+	if (_MaxHz > 25 || _MaxHz < 10) {
+		_MaxHz = 25;
+		Console.WriteLine($"Max rumble frequency too high/low. Range is 10-25. Resetting to default. {_MaxHz}hz");
+		
+	}
         
 		if (_useWS) WebsocketStart();
 		if (_useOSC) OSCStart();
@@ -141,7 +152,7 @@ class HeadpatOSC
 			return;
 		}
 
-		int vibehz = (int)(10 + value * (25 - 10));
+		int vibehz = (int)(10 + value * (_MaxHz - 10));
 		PSVR2ToolkitCAPI.SetHmdRumble((byte)vibehz);
         
 		if (_verbose) Console.WriteLine($"Set rumble frequency to {vibehz}Hz");		
