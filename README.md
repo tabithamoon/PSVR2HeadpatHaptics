@@ -26,6 +26,8 @@ Command line options:
 
   --velocity-sensitivity    (Default: 4) Tunable sensitivity for velocity calculation, higher number = less sensitive
 
+  --max-rumblehz            (Default: 25, Range: 10-25) Tunable maximum rumble frequency.
+
   --help                    Display this help screen.
 
   --version                 Display version information.
